@@ -1,0 +1,24 @@
+{% block content %}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a href="/" class="navbar-brand">NFT Social</a>
+        {% if loggedIn %}
+        <a href="/nfts/mine" class="nav-link text-light">Hello {{ username }} </a>
+        {% endif %}
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            {% if loggedIn %}
+                <a href="/nfts" class="nav-link text-light">View All</a>
+                <a href="/nfts/new" class="nav-link text-light">Upload New NFT</a>
+                <a href="/nfts/mine" class="nav-link text-light">My NFTs</a>
+                <a href="/auth/logout" class="nav-link text-light">Log Out</a>
+            {% else %}
+                <a href="/auth/signup" class="nav-link text-light">Sign Up</a>
+                <a href="/auth/login" class="nav-link text-light">Sign In</a>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+{% endblock %}
