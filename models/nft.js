@@ -3,39 +3,35 @@
 /////////////////////////////////
 const mongoose = require('./connection')
 
-// Also need to import our commentSchema
+// Import commentSchema
 const commentSchema = require('./comment')
 
-// We'll import our user model so we can populate the info
+// Import user model so we can populate the info
 const User = require('./user')
 
 /////////////////////////////////
-// Define our NFT model
+// Define NFT model
 /////////////////////////////////
-// pull the schema and model constructors from mongoose
-// we're going to use something called destructuring to accomplish this
 const { Schema, model } = mongoose
 
 // make our NFT schema
 const nftSchema = new Schema({
     name: { type: String },
-    color: { type: String },
-    readyToEat: { type: Boolean },
-    // instead of username, we're going to use a reference
+    price: { type: Number },
+    image: { type: String },
+    scarcityScore: { type: Number },
+    // Using user reference instead of username
     owner: {
-        // references the type 'objectId'
-        type: Schema.Types.ObjectID,
-        // references the model: 'User'
-        ref: 'User'
-        // now that we have an owner field, let's look and replace references to the username in our NFT controllers
+        type: Schema.Types.ObjectID, // references the type 'objectId'
+        ref: 'User' // references the model: 'User'
     },
-    comments: [commentSchema]
-}, { timestamps: true })
+    comments: [commentSchema] // use comment Schema
+}, { timestamps: true }) // require timestamps for each comment
 
-// make our fruit model
-const Fruit = model("Fruit", nftSchema)
+// Create NFT model
+const Nft = model("Nft", nftSchema)
 
 /////////////////////////////////
-// Export our Model
+// Export NFT Model
 /////////////////////////////////
-module.exports = Fruit
+module.exports = Nft

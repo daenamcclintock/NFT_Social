@@ -3,6 +3,7 @@
 ////////////////////////////////////////////
 const express = require('express')
 const Nft = require('../models/nft')
+import fetch from 'node-fetch';
 
 ////////////////////////////////////////////
 // Create router

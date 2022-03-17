@@ -3,8 +3,8 @@ const Moralis = require("moralis/node");
 const { timer } = require("rxjs");
 
 // Moralis Server Url and Application ID
-const serverUrl = "https://1sa1hg8dmqdd.usemoralis.com:2053/server"
-const appId = "4n89IUpSAyBXWWPJtQbmcNsdA8FHIfFkIyzphIVq"
+const serverUrl = process.env.serverUrl
+const appId = process.env.appId
 
 // Start Moralis
 Moralis.start({ serverUrl, appId})
@@ -130,7 +130,7 @@ async function generateScarcity() {
         });
       }
       
-      
+
       if (allNFTs[j].metadata) {
         allNFTs[j].metadata = JSON.parse(allNFTs[j].metadata);
         allNFTs[j].image = resolveLink(allNFTs[j].metadata.image);
@@ -145,7 +145,8 @@ async function generateScarcity() {
           console.log(error);
         }
       }
-  
+    
+      // Pushing object with attributes, rarity score, token_id, and image into nftArr array
       nftArr.push({
         Attributes: current,
         Scarcity: totalScarcity,
@@ -153,27 +154,30 @@ async function generateScarcity() {
         image: allNFTs[j].image,
       });
     }
-  
+    
+    // Ranking NFTs by most scarse to lease scarse
     nftArr.sort((a, b) => b.Scarcity - a.Scarcity);
-  
+    
+    // Looping through the nftArr to add a rank number to each array element
     for (let i = 0; i < nftArr.length; i++) {
       nftArr[i].Rank = i + 1;
-      const newClass = Moralis.Object.extend(collectionName);
-      const newObject = new newClass();
-  
+      const newClass = Moralis.Object.extend(collectionName); // create new Moralis class for collection name
+      const newObject = new newClass(); // add new object into the Moralis class
+    
       newObject.set("attributes", nftArr[i].Attributes);
       newObject.set("scarcity", nftArr[i].Scarcity);
       newObject.set("tokenId", nftArr[i].token_id);
       newObject.set("rank", nftArr[i].Rank);
       newObject.set("image", nftArr[i].image);
   
-      await newObject.save();
-      console.log(i);
+      await newObject.save(); // save the new collectionName object
+      console.log(i); // keeps a count of the number of NFTs added to the array
     }
     
     return true
   }
   
+  // Calls function to generate scarcity with a promise chain to print the results to the console and check for any errors
   generateScarcity()
   .then( ( result ) => { console.log( result ) } )
   .catch( ( error ) => { console.log( error ) } )
