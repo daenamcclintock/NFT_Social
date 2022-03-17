@@ -3,9 +3,9 @@
 <div>
     <h2 class="display-6">All Examples</h2>
     <div class="row">
-        {% for example in examples %}
+        {% for nft in nfts %}
         <div class="card" style="width: 18rem;">
-            <h5 class="card-header">{{ example.title }}</h5>
+            <h5 class="card-header">{{ nft.name }}</h5>
             <div class="card-body">
                 <h5 class="card-title">
                     Ready?: {{ example.ready }}

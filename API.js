@@ -3,13 +3,13 @@ const Moralis = require("moralis/node");
 const { timer } = require("rxjs");
 
 // Moralis Server Url and Application ID
-const serverUrl = process.env.serverUrl
-const appId = process.env.appId
+const serverUrl = "https://1sa1hg8dmqdd.usemoralis.com:2053/server" // link to server url in .env
+const appId = "4n89IUpSAyBXWWPJtQbmcNsdA8FHIfFkIyzphIVq" // link to application id in .env
 
 // Start Moralis
 Moralis.start({ serverUrl, appId})
 
-// Function to make sure Url includes "ipfs://"
+// Function to convert image url from ipfs:// to https://gateway.ipfs.io so we can render the image
 const resolveLink = (url) => {
     if (!url || !url.includes("ipfs://")) return url;
     return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
@@ -130,7 +130,7 @@ async function generateScarcity() {
         });
       }
       
-
+      // Convert image url from ipfs:// to https://gateway.ipfs.io so we can render the image
       if (allNFTs[j].metadata) {
         allNFTs[j].metadata = JSON.parse(allNFTs[j].metadata);
         allNFTs[j].image = resolveLink(allNFTs[j].metadata.image);
@@ -157,6 +157,8 @@ async function generateScarcity() {
     
     // Ranking NFTs by most scarse to lease scarse
     nftArr.sort((a, b) => b.Scarcity - a.Scarcity);
+
+    console.log(nftArr)
     
     // Looping through the nftArr to add a rank number to each array element
     for (let i = 0; i < nftArr.length; i++) {
@@ -171,7 +173,7 @@ async function generateScarcity() {
       newObject.set("image", nftArr[i].image);
   
       await newObject.save(); // save the new collectionName object
-      console.log(i); // keeps a count of the number of NFTs added to the array
+    //   console.log(i); // keeps a count of the number of NFTs added to the array
     }
     
     return true

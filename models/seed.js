@@ -13,11 +13,11 @@ const db = mongoose.connection; // Database connection
 db.on('open', () => {
 	// array of starter NFTs
 	const startNfts = [
-		{ name: 'NFT', price: '', image: 'url', scarcityScore: 0 },
-		{ name: 'NFT', price: '', image: 'url', scarcityScore: 0 },
-		{ name: 'NFT', price: '', image: 'url', scarcityScore: 0 },
-		{ name: 'NFT', price: '', image: 'url', scarcityScore: 0 },
-		{ name: 'NFT', price: '', image: 'url', scarcityScore: 0 },
+		{ name: 'Bored Ape Yacht Club #3953', price: 18622.15, image: 'https://gateway.ipfs.io/ipfs/Qmdd5vDd75VhgYmLY9R26iUXGot4XWjosbPnzFchFWkbVo', scarcityScore: 759.63 },
+		{ name: 'Bored Ape Yacht Club #9606', price: 18622.15, image: 'https://gateway.ipfs.io/ipfs/QmPJdawstcjfYwqvqURvCS3EGJHJW66xrDA1apD6YJc89W', scarcityScore: 745.14 },
+		{ name: 'Bored Ape Yacht Club #8135', price: 18622.15, image: 'https://gateway.ipfs.io/ipfs/QmerFycLo5q75LuTXyezLUtLo6AkgpJiJxoXAzc3uZKkQw', scarcityScore: 705.39 },
+		{ name: 'Bored Ape Yacht Club #2794', price: 18642.40, image: 'https://gateway.ipfs.io/ipfs/Qmaq3k3Noz9J8B7zoZJFE93h8o4nU18LL8VN8wFuAZZ94q', scarcityScore: 644.21 },
+		{ name: 'Bored Ape Yacht Club #8976', price: 18642.40, image: 'https://gateway.ipfs.io/ipfs/QmTXFya2cxMgyBfHWNTMucnYgVVAkam2eJXaSfVn2GJQtG', scarcityScore: 639.25 },
 	]
 
 	
