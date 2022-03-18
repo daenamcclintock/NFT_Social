@@ -7,8 +7,8 @@ const Moralis = require("moralis/node");
 const { timer } = require("rxjs");
 
 // Moralis Server Url and Application ID
-const serverUrl = process.env.serverUrl // link to server url in .env
-const appId = process.env.appId // link to application id in .env
+const serverUrl = "https://1sa1hg8dmqdd.usemoralis.com:2053/server" // link to server url in .env
+const appId = "4n89IUpSAyBXWWPJtQbmcNsdA8FHIfFkIyzphIVq" // link to application id in .env
 
 // Start Moralis
 Moralis.start({ serverUrl, appId})
@@ -189,13 +189,16 @@ const router = express.Router()
 ////////////////////////////////////////////
 // Router Middleware
 ////////////////////////////////////////////
-
+// create some middleware to protect these routes
 // Authorization middleware
 router.use((req, res, next) => {
-	if (req.session.loggedIn) { // check if logged in
-		next() // if logged in, go to the controller
+	// checking the loggedin boolean of our session
+	if (req.session.loggedIn) {
+		// if they're logged in, go to the next thing(thats the controller)
+		next()
 	} else {
-		res.redirect('/user/login') // if not logged in, redirect to login page
+		// if they're not logged in, send them to the login page
+		res.redirect('/user/login')
 	}
 })
 
@@ -203,11 +206,11 @@ router.use((req, res, next) => {
 // Routes
 ////////////////////////////////////////////
 
-// Index ALL nfts route
+// index ALL nfts route
 router.get('/', (req, res) => {
 	// find the nfts
 	Nft.find({})
-		// Render a template AFTER they're found
+		// then render a template AFTER they're found
 		.then((nfts) => {
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
@@ -221,9 +224,9 @@ router.get('/', (req, res) => {
 		})
 })
 
-// Index that shows only the user's nfts
+// index that shows only the user's nfts
 router.get('/mine', (req, res) => {
-	// Find the nfts
+	// find the nfts
 	Nft.find({ owner: req.session.userId })
 		// then render a template AFTER they're found
 		.then((nfts) => {
@@ -256,10 +259,10 @@ router.post('/', (req, res) => {
 	req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
 	// console.log('this is the nft to create', req.body)
 	// now we're ready for mongoose to do its thing
-	// now that we have user specific nfts, we'll add the username to the fruit created
+	// now that we have user specific nfts, we'll add the username to the nft created
 	// req.body.username = req.session.username
 	// instead of a username, we're now using a reference
-	// and since we've stored the id of the user in the session object, we can use it to set the owner property of the fruit upon creation.
+	// and since we've stored the id of the user in the session object, we can use it to set the owner property of the nft upon creation.
 	req.body.owner = req.session.userId
 	Nft.create(req.body)
 		.then((nft) => {
@@ -278,7 +281,7 @@ router.get('/:id/edit', (req, res) => {
 	const nftId = req.params.id
 	// find the nft
 	Nft.findById(nftId)
-		// -->render if there is an nft
+		// -->render if there is a nft
 		.then((nft) => {
 			console.log('edit froot', nft)
 			const username = req.session.username
@@ -298,13 +301,13 @@ router.put('/:id', (req, res) => {
 	const nftId = req.params.id
 	// check and assign the readyToEat property with the correct value
 	req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
-	// tell mongoose to update the fruit
-	Fruit.findByIdAndUpdate(fruitId, req.body, { new: true })
-		// if successful -> redirect to the fruit page
-		.then((fruit) => {
-			console.log('the updated fruit', fruit)
+	// tell mongoose to update the nft
+	Nft.findByIdAndUpdate(nftId, req.body, { new: true })
+		// if successful -> redirect to the nft page
+		.then((nft) => {
+			console.log('the updated nft', nft)
 
-			res.redirect(`/fruits/${fruit.id}`)
+			res.redirect(`/nfts/${nft.id}`)
 		})
 		// if an error, display that
 		.catch((error) => res.json(error))
@@ -313,17 +316,17 @@ router.put('/:id', (req, res) => {
 // show route
 router.get('/:id', (req, res) => {
 	// first, we need to get the id
-	const fruitId = req.params.id
-	// then we can find a fruit by its id
-	Fruit.findById(fruitId)
+	const nftId = req.params.id
+	// then we can find a nft by its id
+	Nft.findById(nftId)
 		.populate('comments.author')
 		// once found, we can render a view with the data
-		.then((fruit) => {
-			console.log('the fruit we got\n', fruit)
+		.then((nft) => {
+			console.log('the nft we got\n', nft)
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
 			const userId = req.session.userId
-			res.render('fruits/show', { fruit, username, loggedIn, userId })
+			res.render('nfts/show', { nft, username, loggedIn, userId })
 		})
 		// if there is an error, show that instead
 		.catch((err) => {
@@ -334,13 +337,13 @@ router.get('/:id', (req, res) => {
 
 // delete route
 router.delete('/:id', (req, res) => {
-	// get the fruit id
-	const fruitId = req.params.id
-	// delete the fruit
-	Fruit.findByIdAndRemove(fruitId)
-		.then((fruit) => {
-			console.log('this is the response from FBID', fruit)
-			res.redirect('/fruits')
+	// get the nft id
+	const nftId = req.params.id
+	// delete the nft
+	Nft.findByIdAndRemove(nftId)
+		.then((nft) => {
+			console.log('this is the response from FBID', nft)
+			res.redirect('/nfts')
 		})
 		.catch((error) => {
 			console.log(error)

@@ -1,9 +1,11 @@
 /////////////////////////////////
-// Import Dependencies
+// import dependencies
 /////////////////////////////////
 const mongoose = require('./connection')
 
-// Alternate syntax for creating a Schema
+// here's an alternate syntax for creating a schema
+// reminder: we do not need a model for a subdocument
+// all we need is a schema 
 const commentSchema = new mongoose.Schema({
     note: {
         type: String,

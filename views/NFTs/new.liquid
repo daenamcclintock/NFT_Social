@@ -1,37 +1,44 @@
 {% layout 'layout.liquid' %}
 {% block content %}
-<div class="container-sm">
-    <form action="/examples" method="POST">
-        <fieldset>
-            <legend>Create New Example</legend>
-            <label class="form-label">Title: </label>
+    <div class="container-sm">
+        <form action="/nfts" method="POST">
+            <fieldset>
+                <legend>Upload New NFT</legend>
+                <label class="form-label">Name: </label>
+                <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Enter NFT Name"
+                    class="form-control"
+                >
+                <label class="form-label">Price:</label>
+                <input 
+                    type="number"
+                    name="price" 
+                    placeholder="Enter Price in ETH" 
+                    class="form-control"
+                >
+                <label class="form-label">Img:</label>
+                <input 
+                    type="text"
+                    name="image"
+                    placeholder="Enter Image URL" 
+                    class="form-control"
+                >
+                <label class="form-label">Scarcity Score:</label>
+                <input 
+                    type="number"
+                    name="scarcityScore" 
+                    placeholder="Enter Scarcity Score" 
+                    class="form-control"
+                >
+            </fieldset>
+            <br>
             <input 
-                type="text" 
-                name="title" 
-                placeholder="enter example title"
-                class="form-control"
+                type="submit" 
+                value="Upload New NFT"
+                class="btn btn-success"
             >
-            <label class="form-label">Body:</label>
-            <input 
-                type="text" 
-                name="body" 
-                placeholder="enter example body" 
-                class="form-control"
-            >
-            <label class="form-label">Amount:</label>
-            <input 
-                type="number" 
-                name="amount" 
-                class="form-control"
-            >
-            <label class="form-label">Ready:</label>
-            <input 
-                type="checkbox" 
-                name="ready" 
-                class="form-check-input"
-            >
-        </fieldset>
-        <input type="submit" value="Create New Example" class="btn btn-success">
-    </form>
-</div>
+        </form>
+    </div>
 {% endblock %}

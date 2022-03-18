@@ -1,24 +1,26 @@
 /////////////////////////////////
-// Import Dependencies
+// import dependencies
 /////////////////////////////////
 const mongoose = require('./connection')
 
-// Import commentSchema
+// we also need to import our commentSchema
 const commentSchema = require('./comment')
 
-// Import user model so we can populate the info
+// we'll import our user model so we can populate the info
 const User = require('./user')
 
 /////////////////////////////////
-// Define NFT model
+// define our NFTs model
 /////////////////////////////////
+// pull the schema and model constructors from mongoose
+// we're going to use something called destructuring to accomplish this
 const { Schema, model } = mongoose
 
 // make our NFT schema
 const nftSchema = new Schema({
     name: { type: String },
     price: { type: Number },
-    image: { type: String },
+    img: { type: String },
     scarcityScore: { type: Number },
     // Using user reference instead of username
     owner: {
@@ -28,10 +30,10 @@ const nftSchema = new Schema({
     comments: [commentSchema] // use comment Schema
 }, { timestamps: true }) // require timestamps for each comment
 
-// Create NFT model
+// make our NFT model
 const Nft = model("Nft", nftSchema)
 
 /////////////////////////////////
-// Export NFT Model
+// Export our Model
 /////////////////////////////////
 module.exports = Nft

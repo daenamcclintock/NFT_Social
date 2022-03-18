@@ -1,24 +1,32 @@
-// Import what I need
-const { Schema, model } = require('./connection.js')
+/////////////////////////////////
+// import dependencies
+/////////////////////////////////
+const mongoose = require('./connection')
 
-// Create the Schema
-const UserSchema = new Schema(
-	{
-		username: { 
-			type: String, 
-			required: true,
-			unique: true 
-		},
-		password: { 
-			type: String, 
-			required: true
-		}
-	},
-	{ timestamps: true }
-)
+/////////////////////////////////
+// define our user model
+/////////////////////////////////
+// pull the schema and model constructors from mongoose
+// we're going to use something called destructuring to accomplish this
+const { Schema, model } = mongoose
 
-// Create the model
-const User = model('User', UserSchema)
+// Make a user schema
+const userSchema = new Schema({
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        required: true
+    }
+})
 
-// Export the model
+// Make a user model
+const User = model("User", userSchema)
+
+/////////////////////////////////
+// export our user model
+/////////////////////////////////
 module.exports = User

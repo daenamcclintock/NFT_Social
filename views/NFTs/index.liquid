@@ -1,27 +1,29 @@
+<!-- we're serving block content in layout.liquid -->
+<!-- so we need to inform all our blocks(files) -->
 {% layout 'layout.liquid'%}
+<!-- here we start our block content -->
 {% block content %}
-<div>
-    <h2 class="display-6">All Examples</h2>
-    <div class="row">
-        {% for nft in nfts %}
-        <div class="card" style="width: 18rem;">
-            <h5 class="card-header">{{ nft.name }}</h5>
-            <div class="card-body">
-                <h5 class="card-title">
-                    Ready?: {{ example.ready }}
-                </h5>
-                <p class="card-text">
-                    Body: {{ example.body }}
-                </p>
-                <p class="card-text">
-                    Amount: {{ example.amount }}
-                </p>
-                <a href="/examples/{{ example.id }}" class="btn btn-info">
-                    View {{ example.title }}
-                </a>
-            </div>
+    <div >
+        <h2 class="display-6">All NFTs</h2>
+        <div class="row">
+            {% for nft in nfts %}
+                <div class="card" style="width: 18rem;">
+                    <!-- card header -> name of nft -->
+                    <!-- card body -> ready to eat as title, color as text-->
+                    <h5 class="card-header">{{nft.name}}</h5>
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            
+                        </h5>
+                        <p class="card-text"> 
+                            The color of this {{nft.name}} is {{ nft.color }}
+                        </p>
+                        <a href="/nfts/{{ nft.id }}" class="btn btn-info">
+                            View {{ nft.name }}
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
-</div>
 {% endblock %}

@@ -1,26 +1,47 @@
 {% layout 'layout.liquid' %}
 {% block content %}
-<div class="container-md">
-    <article>
-        <h2>
-            {{ example.title }} -
-            {% if example.ready %}
-            Ready
-            {% else %}
-            Not Ready
-            {%endif%}
-        </h2>
-        <h3>Amount: {{ example.amount }}</h3>
-        <h6>Body: {{ example.body }}</h6>
-        {% if example.owner == userId %}
-        <div class="btn-group">
+    <div class="container-md">
+        <!-- you can do fun things like inline style with properties of your rendered object -->
+        <!-- <article style="background-color:{{fruit.color}}"> -->
+        <article>
+            <h2>
+                {{ nft.name }}
+            </h2>
+            <h3>{{ nft.color }}</h3>
+            {% if nft.owner == userId  %}
+                <div class="btn-group">
 
-            <a href="/examples/{{ example.id }}/edit" class="btn btn-primary">Edit</a>
-            <form action="/examples/{{ example.id }}?_method=DELETE" method="POST">
-                <input type="submit" value="Delete" class="btn btn-danger">
+                    <a href="/nfts/{{ nft.id }}/edit" class="btn btn-primary">Edit</a>
+                    <form action="/nfts/{{ nft._id }}?_method=DELETE" method="POST">
+                        <input type="submit" value="delete that froot" class="btn btn-danger">
+                    </form>
+                </div>
+            {% endif %}
+        </article>
+        <div class="col-md-6">
+            <form action="/comments/{{nft.id}}" method="POST">
+                <fieldset>
+                    <legend>Add Comment</legend>
+                    <label class="form-label">Comment: </label>
+                    <input type="text" class="form-control" name="note" placeholder="enter comment here...">
+                </fieldset>
+                <input type="submit" class="btn btn-success" value="Add Comment">
             </form>
         </div>
+        <!-- we need an if statement -->
+        <!-- this will solve a potential problem -->
+        <!-- if the nft has no comments, we wont even try to show any -->
+        {% if nft.comments.length > 0%}
+            <!-- here we'll add our comment container -->
+            <div class="container-sm justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <!-- here we need to loop over the comments -->
+                    <!-- for every comment render a comment.liquid block -->
+                    {% for comment in nft.comments %}
+                        {% render '../comment.liquid', comment: comment, userId: userId, nft: nft %}
+                    {% endfor %}
+                </div>
+            </div>
         {% endif %}
-    </article>
-</div>
+    </div>
 {% endblock %}

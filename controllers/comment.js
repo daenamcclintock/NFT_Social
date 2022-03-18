@@ -4,9 +4,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
-// We need our NFT MODEL because comments are ONLY a schema
-// Run queries on NFTs and add in comments
-const Fruit = require('../models/fruit')
+// we need our NFT MODEL because comments are ONLY a schema
+// so we'll run queries on NFTs, and add in comments
+const Nft = require('../models/nft')
 
 ////////////////////////////////////////////
 // Create router
@@ -49,19 +49,19 @@ router.post('/:nftId', (req, res) => {
 // we'll use two params to make our life easier
 // first the id of the nft, since we need to find it
 // then the id of the comment, since we want to delete it
-router.delete('/delete/:nftsId/:commId', (req, res) => {
+router.delete('/delete/:nftId/:commId', (req, res) => {
     // first we want to parse out our ids
     const nftId = req.params.nftId
     const commId = req.params.commId
     // then we'll find the nft
-    Nft.findById(nftId)
+    Nft.findById(NftId)
         .then(nft => {
             const theComment = nft.comments.id(commId)
             // only delete the comment if the user who is logged in is the comment's author
             if ( theComment.author == req.session.userId) {
                 // then we'll delete the comment
                 theComment.remove()
-                // return the saved nft
+                // return the saved NFT
                 return nft.save()
             } else {
                 return
