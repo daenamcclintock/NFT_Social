@@ -54,7 +54,7 @@ router.delete('/delete/:nftId/:commId', (req, res) => {
     const nftId = req.params.nftId
     const commId = req.params.commId
     // then we'll find the nft
-    Nft.findById(NftId)
+    Nft.findById(nftId)
         .then(nft => {
             const theComment = nft.comments.id(commId)
             // only delete the comment if the user who is logged in is the comment's author

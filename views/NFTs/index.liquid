@@ -4,19 +4,20 @@
 <!-- here we start our block content -->
 {% block content %}
     <div >
-        <h2 class="display-6">All NFTs</h2>
+        <h2 class="display-6"><b>All NFTs</b></h2>
         <div class="row">
             {% for nft in nfts %}
                 <div class="card" style="width: 18rem;">
                     <!-- card header -> name of nft -->
                     <!-- card body -> ready to eat as title, color as text-->
-                    <h5 class="card-header">{{nft.name}}</h5>
+                    <h5 class="card-header"><b>{{nft.name}}</b></h5>
                     <div class="card-body">
                         <h5 class="card-title">
                             
                         </h5>
                         <p class="card-text"> 
-                            The color of this {{nft.name}} is {{ nft.color }}
+                            <img src="{{ nft.img }}" width="220" height="200">
+                            <p> The Price of This NFT is: ${{ nft.price }} </p>
                         </p>
                         <a href="/nfts/{{ nft.id }}" class="btn btn-info">
                             View {{ nft.name }}
