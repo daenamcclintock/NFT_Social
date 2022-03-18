@@ -256,7 +256,7 @@ router.post('/', (req, res) => {
 	// we can check AND set this property in one line of code
 	// first part sets the property name
 	// second is a ternary to set the value
-	req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
+	// req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
 	// console.log('this is the nft to create', req.body)
 	// now we're ready for mongoose to do its thing
 	// now that we have user specific nfts, we'll add the username to the nft created
@@ -273,6 +273,14 @@ router.post('/', (req, res) => {
 			console.log(err)
 			res.json({ err })
 		})
+})
+
+// POST Route for Search
+router.get('/search', async (req, res) => {
+    Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
+        .then((data) => {
+            res.send(data)
+        })
 })
 
 // edit route -> GET that takes us to the edit form view
