@@ -275,8 +275,9 @@ router.post('/', (req, res) => {
 		})
 })
 
-// POST Route for Search
+// GET Route for Search
 router.get('/search', async (req, res) => {
+    const nfti = req.params.
     Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
         .then((data) => {
             res.send(data)
