@@ -5,6 +5,7 @@ const express = require('express')
 const Nft = require('../models/nft')
 const Moralis = require("moralis/node");
 const { timer } = require("rxjs");
+const { match } = require('assert');
 
 // Moralis Server Url and Application ID
 const serverUrl = "https://1sa1hg8dmqdd.usemoralis.com:2053/server" // link to server url in .env
@@ -252,17 +253,6 @@ router.get('/new', (req, res) => {
 
 // create -> POST route that actually calls the db and makes a new document
 router.post('/', (req, res) => {
-	// check if the readyToEat property should be true or false
-	// we can check AND set this property in one line of code
-	// first part sets the property name
-	// second is a ternary to set the value
-	// req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
-	// console.log('this is the nft to create', req.body)
-	// now we're ready for mongoose to do its thing
-	// now that we have user specific nfts, we'll add the username to the nft created
-	// req.body.username = req.session.username
-	// instead of a username, we're now using a reference
-	// and since we've stored the id of the user in the session object, we can use it to set the owner property of the nft upon creation.
 	req.body.owner = req.session.userId
 	Nft.create(req.body)
 		.then((nft) => {
@@ -275,13 +265,24 @@ router.post('/', (req, res) => {
 		})
 })
 
-// GET Route for Search
+// GET Route for searching the NFT by TokenId
 router.get('/search', async (req, res) => {
-    const nfti = req.params.
+    const tokenId = req.query.tokenId
     Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
-        .then((data) => {
-            res.send(data)
+        .then((rawData) => {
+            const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
+            // console.log('this is the filtered NFT', matchNft)
+            // res.send(matchNft[0])
+            const username = req.session.username
+			const loggedIn = req.session.loggedIn
+			const userId = req.session.userId
+			res.render('nfts/show', matchNft[0])
         })
+        // show an error if there is one
+		.catch((error) => {
+			console.log(error)
+			res.json({ error })
+		})
 })
 
 // edit route -> GET that takes us to the edit form view
