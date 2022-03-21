@@ -18,7 +18,7 @@ Moralis.start({ serverUrl, appId})
 const resolveLink = (url) => {
     if (!url || !url.includes("ipfs://")) return url;
     return url.replace("ipfs://", "https://gateway.ipfs.io/ipfs/");
-  };
+};
 
 // Collection address and name for BoredApeYachtClub NFT collection
 const collectionAddress = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"; // NFT Collection Address
@@ -180,7 +180,7 @@ async function generateScarcity() {
     }
     
     return true
-  }
+}
 
 ////////////////////////////////////////////
 // Create router
@@ -190,15 +190,12 @@ const router = express.Router()
 ////////////////////////////////////////////
 // Router Middleware
 ////////////////////////////////////////////
-// create some middleware to protect these routes
+
 // Authorization middleware
 router.use((req, res, next) => {
-	// checking the loggedin boolean of our session
 	if (req.session.loggedIn) {
-		// if they're logged in, go to the next thing(thats the controller)
 		next()
 	} else {
-		// if they're not logged in, send them to the login page
 		res.redirect('/user/login')
 	}
 })
@@ -207,51 +204,43 @@ router.use((req, res, next) => {
 // Routes
 ////////////////////////////////////////////
 
-// index ALL nfts route
+// INDEX Route - ALL NFTs
 router.get('/', (req, res) => {
-	// find the nfts
 	Nft.find({})
-		// then render a template AFTER they're found
 		.then((nfts) => {
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
-			// console.log(nfts)
 			res.render('nfts/index', { nfts, username, loggedIn })
 		})
-		// show an error if there is one
 		.catch((error) => {
 			console.log(error)
 			res.json({ error })
 		})
 })
 
-// index that shows only the user's nfts
+// INDEX that shows only the User's NFTs
 router.get('/mine', (req, res) => {
-	// find the nfts
 	Nft.find({ owner: req.session.userId })
-		// then render a template AFTER they're found
 		.then((nfts) => {
-			// console.log(nfts)
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
 
 			res.render('nfts/index', { nfts, username, loggedIn })
 		})
-		// show an error if there is one
 		.catch((error) => {
 			console.log(error)
 			res.json({ error })
 		})
 })
 
-// new route -> GET route that renders our page with the form
+// New Route -> GET route that renders new page with the form to upload a new NFT
 router.get('/new', (req, res) => {
 	const username = req.session.username
 	const loggedIn = req.session.loggedIn
 	res.render('nfts/new', { username, loggedIn })
 })
 
-// create -> POST route that actually calls the db and makes a new document
+// Create NFT -> POST route that actually calls the db and makes a new document
 router.post('/', (req, res) => {
 	req.body.owner = req.session.userId
 	Nft.create(req.body)
@@ -265,91 +254,87 @@ router.post('/', (req, res) => {
 		})
 })
 
+// GET Route for Search
 // GET Route for searching the NFT by TokenId
 router.get('/search', async (req, res) => {
-    const tokenId = req.query.tokenId
-    Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
-        .then((rawData) => {
-            const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
-            // console.log('this is the filtered NFT', matchNft)
-            // res.send(matchNft[0])
-            const username = req.session.username
-			const loggedIn = req.session.loggedIn
-			const userId = req.session.userId
-			res.render('nfts/show', matchNft[0])
-        })
-        // show an error if there is one
-		.catch((error) => {
-			console.log(error)
-			res.json({ error })
-		})
-})
+  const tokenId = req.query.tokenId
+  Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
+      .then((rawData) => {
+          res.send(rawData)
+          // const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
+          // console.log('this is the filtered NFT', matchNft)
+          // res.send(matchNft[0])
+          // res.render('nfts/show', matchNft[0])
+            })
+      .catch((error) => {
+          console.log(error)
+          res.json({ error })
+      })
+    })
 
-// edit route -> GET that takes us to the edit form view
+    // const NFTLowestPrice = req.query.NFTLowestPrice
+    // Promise.resolve(Moralis.Web3API.token.getNFTLowestPrice({address: collectionAddress,}))
+    //     .then((data) => {
+    //         const matchNft = data.result.filter(nft => nft.price == NFTLowestPrice)
+    //         console.log('this is the filtered NFT', matchNft)
+    //         res.send(matchNft[0].metadata)
+    //         res.render('nfts/show', matchNft[0])
+    //     })
+    //     // show an error if there is one
+    //     .catch((error) => {
+    //         console.log(error)
+    //         res.json({ error })
+    //     })
+// })
+
+// EDIT route -> GET that takes us to the edit form view
 router.get('/:id/edit', (req, res) => {
-	// we need to get the id
 	const nftId = req.params.id
-	// find the nft
 	Nft.findById(nftId)
-		// -->render if there is a nft
 		.then((nft) => {
 			console.log('edit froot', nft)
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
 			res.render('nfts/edit', { nft, username, loggedIn })
 		})
-		// -->error if no nft
 		.catch((err) => {
 			console.log(err)
 			res.json(err)
 		})
 })
 
-// update route -> sends a put request to our database
+// UPDATE route -> sends a put request to our database
 router.put('/:id', (req, res) => {
-	// get the id
 	const nftId = req.params.id
-	// check and assign the readyToEat property with the correct value
-	req.body.readyToEat = req.body.readyToEat === 'on' ? true : false
-	// tell mongoose to update the nft
 	Nft.findByIdAndUpdate(nftId, req.body, { new: true })
-		// if successful -> redirect to the nft page
 		.then((nft) => {
 			console.log('the updated nft', nft)
-
 			res.redirect(`/nfts/${nft.id}`)
 		})
-		// if an error, display that
 		.catch((error) => res.json(error))
 })
 
-// show route
+// SHOW Route - renders show page by nftId
 router.get('/:id', (req, res) => {
-	// first, we need to get the id
 	const nftId = req.params.id
-	// then we can find a nft by its id
 	Nft.findById(nftId)
 		.populate('comments.author')
-		// once found, we can render a view with the data
 		.then((nft) => {
-			console.log('the nft we got\n', nft)
+			// console.log('the nft we got\n', nft)
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
 			const userId = req.session.userId
 			res.render('nfts/show', { nft, username, loggedIn, userId })
 		})
-		// if there is an error, show that instead
 		.catch((err) => {
 			console.log(err)
 			res.json({ err })
 		})
 })
 
-// delete route
+// DELETE Route - finds NFT by ID and removes it
 router.delete('/:id', (req, res) => {
-	// get the nft id
 	const nftId = req.params.id
-	// delete the nft
 	Nft.findByIdAndRemove(nftId)
 		.then((nft) => {
 			console.log('this is the response from FBID', nft)
@@ -360,6 +345,12 @@ router.delete('/:id', (req, res) => {
 			res.json({ error })
 		})
 })
+
+// PUT Route - Like / Dislike a Post
+router.get("/:id/like", async (req, res) => {
+  
+});
+
 ////////////////////////////////////////////
 // Export the Router
 ////////////////////////////////////////////

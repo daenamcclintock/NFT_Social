@@ -17,10 +17,14 @@
                         </h5>
                         <p class="card-text"> 
                             <img src="{{ nft.img }}" width="220" height="200">
-                            <p> The Price of This NFT is: ${{ nft.price }} </p>
                         </p>
                         <a href="/nfts/{{ nft.id }}" class="btn btn-info">
                             View {{ nft.name }}
+                        </a>
+                        <br>
+                        <br>
+                        <a href="{{nft.openSeaLink}}" class="btn btn-outline-dark">
+                            Check out {{ nft.name }} on OpenSea!
                         </a>
                     </div>
                 </div>

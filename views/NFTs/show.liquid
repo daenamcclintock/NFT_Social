@@ -21,10 +21,14 @@
                 <br>
                 <img src="{{ nft.img }}" width="220" height="200">
                 <br>
+                <div class="likes">
+                    <p>Likes: {{nft.likes}}</p>
+                    <button type="button" class="btn btn-outline-success btn-small" id="likeButton">Like</button>
+                    <button type="button" class="btn btn-outline-danger btn-small" id="dislikeButton">Dislike</button>
+                </div>
                 <fieldset>
                     <br>
                     <p> Rarity Score: <b>{{ nft.scarcityScore }}</b></p>
-                    <p> The Price of This NFT is: <b>${{ nft.price }}</b> </p>
                     <legend>Add Comment</legend>
                     <br>
                     <label class="form-label">Comment: </label>

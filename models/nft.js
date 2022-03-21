@@ -19,9 +19,9 @@ const { Schema, model } = mongoose
 // make our NFT schema
 const nftSchema = new Schema({
     name: { type: String },
-    price: { type: Number },
     img: { type: String },
     scarcityScore: { type: Number },
+    openSeaLink: { type: String},
     // Using user reference instead of username
     owner: {
         type: Schema.Types.ObjectID, // references the type 'objectId'
