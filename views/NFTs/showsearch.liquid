@@ -3,36 +3,22 @@
     <div class="container-md">
         <!-- you can do fun things like inline style with properties of your rendered object -->
         <article>
-            <br>
             <h2>
-                {{ nft.name }}
+                Bored Ape Yacht Club #{{ matchNFT.token_id }}
             </h2>
-            {% if nft.owner == userId  %}
-                <div class="btn-group">
-
-                    <a href="/nfts/{{ nft.id }}/edit" class="btn btn-primary">Edit NFT</a>
-                    <form action="/nfts/{{ nft._id }}?_method=DELETE" method="POST">
-                        <input type="submit" value="Delete NFT" class="btn btn-danger">
-                    </form>
-                </div>
-            {% endif %}
         </article>
         <div class="col-md-6">
             <form action="/comments/{{nft.id}}" method="POST">
                 <br>
-                <img src="{{ nft.img }}" width="220" height="200">
+                <img src="{{ matchNFT.metadata.image }}" width="220" height="200">
                 <br>
                 <div class="likes">
                     <p>Likes: <span type="number" value=0 id="likes">{{nft.likes}}</span></p>
                     <button type="button" class="btn btn-outline-success btn-small" id="likeButton">Like</button>
                     <button type="button" class="btn btn-outline-danger btn-small" id="dislikeButton">Dislike</button>
-                    <a href="{{nft.openSeaLink}}" class="btn btn-outline-dark">
-                        Buy on OpenSea
-                    </a>
                 </div>
                 <fieldset>
                     <br>
-                    <p> Rarity Score: <b>{{ nft.scarcityScore }}</b></p>
                     <legend>Add Comment</legend>
                     <br>
                     <label class="form-label">Comment: </label>

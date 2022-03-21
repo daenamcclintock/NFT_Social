@@ -6,6 +6,7 @@ const Nft = require('../models/nft')
 const Moralis = require("moralis/node");
 const { timer } = require("rxjs");
 const { match } = require('assert');
+const { raw } = require('express');
 
 // Moralis Server Url and Application ID
 const serverUrl = "https://1sa1hg8dmqdd.usemoralis.com:2053/server" // link to server url in .env
@@ -254,38 +255,21 @@ router.post('/', (req, res) => {
 		})
 })
 
-// GET Route for Search
 // GET Route for searching the NFT by TokenId
 router.get('/search', async (req, res) => {
   const tokenId = req.query.tokenId
   Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
       .then((rawData) => {
-          res.send(rawData)
-          // const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
-          // console.log('this is the filtered NFT', matchNft)
-          // res.send(matchNft[0])
-          // res.render('nfts/show', matchNft[0])
-            })
+          // res.send(rawData)
+          const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
+          console.log('this is the filtered NFT', matchNft)
+          res.render('nfts/showsearch', {matchNft: matchNft})
+          })
       .catch((error) => {
           console.log(error)
           res.json({ error })
       })
     })
-
-    // const NFTLowestPrice = req.query.NFTLowestPrice
-    // Promise.resolve(Moralis.Web3API.token.getNFTLowestPrice({address: collectionAddress,}))
-    //     .then((data) => {
-    //         const matchNft = data.result.filter(nft => nft.price == NFTLowestPrice)
-    //         console.log('this is the filtered NFT', matchNft)
-    //         res.send(matchNft[0].metadata)
-    //         res.render('nfts/show', matchNft[0])
-    //     })
-    //     // show an error if there is one
-    //     .catch((error) => {
-    //         console.log(error)
-    //         res.json({ error })
-    //     })
-// })
 
 // EDIT route -> GET that takes us to the edit form view
 router.get('/:id/edit', (req, res) => {
@@ -314,7 +298,7 @@ router.put('/:id', (req, res) => {
 		.catch((error) => res.json(error))
 })
 
-// SHOW Route - renders show page by nftId
+// SHOW Route - Renders show page by nftId
 router.get('/:id', (req, res) => {
 	const nftId = req.params.id
 	Nft.findById(nftId)
