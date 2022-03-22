@@ -258,12 +258,15 @@ router.post('/', (req, res) => {
 // GET Route for searching the NFT by TokenId
 router.get('/search', async (req, res) => {
   const tokenId = req.query.tokenId
-  Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress,}))
+  Promise.resolve(Moralis.Web3API.token.getAllTokenIds({address: collectionAddress, limit: 10000}))
       .then((rawData) => {
-          // res.send(rawData)
-          const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
-          console.log('this is the filtered NFT', matchNft)
-          res.render('nfts/showsearch', {matchNft: matchNft})
+        res.send(rawData)
+          // const matchNft = rawData.result.filter(nft => nft.token_id == tokenId)
+          // let nftImage = matchNft.map((e) => JSON.parse(e.metadata).image);
+          // let resolveImage = resolveLink(nftImage[0])
+          // console.log('this is the nftImage', nftImage)
+          // console.log('this is resolveImage', resolveImage)
+          // res.render('nfts/showsearch', {tokenId, resolveImage})
           })
       .catch((error) => {
           console.log(error)

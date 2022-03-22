@@ -4,13 +4,13 @@
         <!-- you can do fun things like inline style with properties of your rendered object -->
         <article>
             <h2>
-                Bored Ape Yacht Club #{{ matchNFT.token_id }}
+                Bored Ape Yacht Club #{{ tokenId }}
             </h2>
         </article>
         <div class="col-md-6">
             <form action="/comments/{{nft.id}}" method="POST">
                 <br>
-                <img src="{{ matchNFT.metadata.image }}" width="220" height="200">
+                <img src="{{ resolveImage }}" width="220" height="200">
                 <br>
                 <div class="likes">
                     <p>Likes: <span type="number" value=0 id="likes">{{nft.likes}}</span></p>

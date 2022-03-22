@@ -17,6 +17,11 @@ There will be a BUY button on the NFT show page which will decrement the quantit
 
 POST-MVP GOALS:
 - add in search functionality to search by NFT name or username
+
+
+VERSION 2
+- When uploading a new BAYC NFT, add attributes and scarcity score is auto-generated
+- Like/Dislike button functionality
 - Have a "Popular" button that displays a show page of the NFTs in order by most liked
 - Place the NFTs into categories and have clickable categories that will show all of the NFTs that are labeled as part of that category (Ex: art, music, videos, sports, photography, etc)
-- Add modals on the different pages with additional information about the NFTs (artist, )
+- Add modals on the different pages with additional information about the NFTs (artist, different attributes, )
