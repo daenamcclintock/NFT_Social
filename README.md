@@ -25,3 +25,5 @@ VERSION 2
 - Have a "Popular" button that displays a show page of the NFTs in order by most liked
 - Place the NFTs into categories and have clickable categories that will show all of the NFTs that are labeled as part of that category (Ex: art, music, videos, sports, photography, etc)
 - Add modals on the different pages with additional information about the NFTs (artist, different attributes, )
+
+Pushing to Heroku
