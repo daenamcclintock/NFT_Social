@@ -13,8 +13,7 @@ const middleware = require('./utils/middleware')
 // Create Express Application Object
 ////////////////////////////////////////////
 // const app = require('liquid-express-views')(express())
-const path = require("path")
-const app = require("liquid-express-views")(express(), {root: [path.resolve(__dirname, 'views/')]})
+const app = require("liquid-express-views")(express(), {root: process.cwd() + "/views/"});
 
 ////////////////////////////////////////////
 // Middleware
