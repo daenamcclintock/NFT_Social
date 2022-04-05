@@ -226,7 +226,7 @@ router.get('/mine', (req, res) => {
 			const username = req.session.username
 			const loggedIn = req.session.loggedIn
 
-			res.render('nfts/index', { nfts, username, loggedIn })
+			res.render('/nfts/index', { nfts, username, loggedIn })
 		})
 		.catch((error) => {
 			console.log(error)
@@ -238,7 +238,7 @@ router.get('/mine', (req, res) => {
 router.get('/new', (req, res) => {
 	const username = req.session.username
 	const loggedIn = req.session.loggedIn
-	res.render('nfts/new', { username, loggedIn })
+	res.render('/nfts/new', { username, loggedIn })
 })
 
 // Create NFT -> POST route that actually calls the db and makes a new document
